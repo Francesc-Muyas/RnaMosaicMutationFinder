@@ -52,7 +52,7 @@ Firstly, you will need to install some software
 
 ## Documentation and usage
 
-* Step 1. Single sample somatic calling. 
+- Step 1. Single sample somatic calling. 
 
 Raw BAM files are post-processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`. `python bam_quality_filter.py` requires:
 
@@ -167,7 +167,7 @@ optional arguments:
 Once we get the vcf for all samples, we collapse all PASS variant sites in one zero-based bed file (i.e using bedtools merge), which will be necessary for Step 2.
 
 
-* Step 2. Re-genotyping variant sites in all samples.
+- Step 2. Re-genotyping variant sites in all samples.
 
 Once we have created the bed file with all variant sites, if possible, we should remove those sites which are known to be germline variants from the analysis. 
 
@@ -188,7 +188,7 @@ optional arguments:
 !! Output files shoul be called with next pattern: `Individual.Tissue.tsv`, where Individual is the id used for the individual, and Tissue is the analysed tissue without dots (i.e Brain, Skin_sun_exposed...)
 
 
-* Step 3. 3D-Matrix: multi-tissue, multi-individual
+- Step 3. 3D-Matrix: multi-tissue, multi-individual
 
 In this step we collect all tsv per individual obtained in Step 2 to create a multi-tissue per individual matrix. It is performed with the python script ` tsv2matrix.py`, which requires (tsv files should be sorted by genomic coordinates):
 
@@ -209,7 +209,7 @@ optional arguments:
 Once matrixes per individual are created, they must be merged taking into account the column order (R function `rbind.fill` from `plyr` package)
 
 
-* Step 4. 3D-Matrix: Filtering
+- Step 4. 3D-Matrix: Filtering
 
 Once Multi-tissue, multi-individual matrix is created, you can filter it for germline variants, editing sites and systematic/recurrent errors using the R script `Matrix_filtering.r`. This script have some requirements:
 
