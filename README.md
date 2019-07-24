@@ -209,7 +209,7 @@ optional arguments:
 Once matrixes per individual are created, they must be merged taking into account the column order (R function `rbind.fill` from `plyr` package)
 
 
-4. **Step 4. 3D-Matrix: Filtering*
+4. **Step 4. 3D-Matrix: Filtering**
 
 Once Multi-tissue, multi-individual matrix is created, you can filter it for germline variants, editing sites and systematic/recurrent errors using the R script `Matrix_filtering.r`. This script have some requirements:
 
@@ -236,5 +236,5 @@ optional arguments:
 * Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
 * Multi-tissue, multi-individual matrix obtained previously in Step 3.
 * Random forest object found in source/RandomForest_model.rds.
-* Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
+* Bed file with blacklisted genes obtained from [Fajardo et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/22294350) (source/blacklist.bed)
 * Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
