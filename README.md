@@ -163,3 +163,47 @@ optional arguments:
 ```
 
 Once we get the vcf for all samples, we collapse all PASS variant sites in one zero-based bed file (i.e using bedtools merge), which will be necessary for Step 2.
+
+
+* Step 2. Re-genotyping variant sites in all samples.
+
+Once we have created the bed file with all variant sites, if possible, we should remove those sites which are known to be germline variants from the analysis. 
+
+At this point, we take the previous `Final.bam` files of all samples (see Workflow) and re-calculate the mpileup file using the variant bed file with the option `-l variant.bed`. Again, we transform this pileup files to tsv files using the `pileup2tsv.py` script. The resulting tsv is then used as input of the R script ` tsv2genotype.r`, which requires:
+
+```
+usage: tsv2genotype.r [-h] -i file -o file -cov COV
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i file, --var_file file
+                        input read count file
+  -o file, --output_file file
+                        output_file
+  -cov COV, --cov COV   Minimum coverage
+```
+
+!! Output files shoul be called with next pattern: `Individual.Tissue.tsv`, where Individual is the id used for the individual, and Tissue is the analysed tissue without dots (i.e Brain, Skin_sun_exposed...)
+
+
+*Step 3. 3D-Matrix: multi-tissue, multi-individual
+
+In this step we collect all tsv per individual obtained in Step 2 to create a multi-tissue per individual matrix. It is performed with the python script ` tsv2matrix.py`, which requires (tsv files should be sorted by genomic coordinates):
+
+```
+usage: tsv2matrix.py [-h] --input I --headerlines H --individual ID --output O
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --input I, -i I       input files
+  --headerlines H, -hd H
+                        header line number
+  --individual ID, -id ID
+                        Id of the individual
+  --output O, -o O      output file: Matrix per sample with all tissue
+                        information
+```
+
+Once matrixes per individual are created, they must be merged taking into account the column order (R function `rbind.fill` from `plyr` package)
+
+
