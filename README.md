@@ -213,8 +213,8 @@ Once matrixes per individual are created, they must be merged taking into accoun
 
 Once Multi-tissue, multi-individual matrix is created, you can filter it for germline variants, editing sites and systematic/recurrent errors using the R script `Matrix_filtering.r`. This script have some requirements:
 
-    Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
-    Multi-tissue, multi-individual matrix obtained previously in Step 3.
-    Random forest object found in source/RandomForest_model.rds.
-    Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
-    Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
+* Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
+* Multi-tissue, multi-individual matrix obtained previously in Step 3.
+* Random forest object found in source/RandomForest_model.rds.
+* Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
+* Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
