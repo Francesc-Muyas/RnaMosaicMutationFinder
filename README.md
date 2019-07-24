@@ -237,4 +237,4 @@ optional arguments:
 * Multi-tissue, multi-individual matrix obtained previously in Step 3.
 * Random forest object found in source/RandomForest_model.rds.
 * Bed file with blacklisted genes created from [Fajardo et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/22294350) (source/blacklist.bed)
-* Systematic errors (ABB) ([Muyas et al. 2019](https://www.ncbi.nlm.nih.gov/pubmed/30353964)) and editing sites bed file described in literature ([Tan et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/29022589), [Kiran et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/23074185) and [Picardi et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/27587585) )(source/systematic_editing.bed.gz, needed to be unzip for the script)
+* Systematic errors (ABB) ([Muyas et al. 2019](https://www.ncbi.nlm.nih.gov/pubmed/30353964)) and editing sites bed file described in literature ([Tan et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/29022589), [Kiran et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/23074185) and [Picardi et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/27587585)) : source/systematic_editing.bed.gz (needed to be unzip for the script)
