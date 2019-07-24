@@ -2,7 +2,7 @@
 Somatic variant calling tools for RNAseq data
 
 RnaMosaicMutationFinder provides a workflow and individual custom scripts to perform somatic variant calling in RNA-seq data. 
-As observed in the workflow figure, the workflow is divided in 4 parts:
+This workflow is divided in 4 parts:
 
 * Step 1. Single sample somatic variant calling. 
 * Step 2. Re-genotyping variant sites in all samples.
@@ -15,7 +15,7 @@ As observed in the workflow figure, the workflow is divided in 4 parts:
 
 
 ## Get RnaMosaicMutationFinder tools  
-You will need to run `git clone ` to get RnaMosaicMutationFinder tools. 
+You will need to run `git clone` to get RnaMosaicMutationFinder tools. 
 
 ```
 git clone https://github.com/Francesc-Muyas/RnaMosaicMutationFinder
@@ -32,7 +32,7 @@ Firstly, you will need to install some software
     * sys
     * subprocess
     * os
-    * bgzf (from Bio)
+    * bgzf (from Bio module)
     * re
     * ntpath
     * struct
@@ -54,7 +54,7 @@ Firstly, you will need to install some software
 
 1. **Step 1. Single sample somatic calling**
 
-Raw BAM files are post-processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`. `python bam_quality_filter.py` requires:
+Raw BAM files are processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`, which requires:
 
 ```
 usage: bam_quality_filter.py [-h] --infile INFILE --outfile OUTFILE
@@ -73,7 +73,7 @@ optional arguments:
 
 Finally, in order to avoid systematic alignment errors at the extremes of the reads, we suggest trimming the first and last 4 bases from each read-end or read-breakpoint (BamUtil version 1.0.14).
 
-Mpileup file is obtained using Samtools mpileup (version 1.3.1). Pileup files are transformed to tsv files using `pileup2tsv.py` python script, which requires:
+Mpileup file is obtained using Samtools mpileup (version 1.3.1). Pileup files are transformed to tsv files using the python script `pileup2tsv.py`, which requires:
 
 ```
 usage: pileup2tsv.py [-h] --pileup PILEUP -o VARIANTF [--minBQ MINBQ]
@@ -185,12 +185,12 @@ optional arguments:
   -cov COV, --cov COV   Minimum coverage
 ```
 
-!! Output files shoul be called with next pattern: `Individual.Tissue.tsv`, where Individual is the id used for the individual, and Tissue is the analysed tissue without dots (i.e Brain, Skin_sun_exposed...)
+!! Output files should be called as: `Individual.Tissue.tsv`, where Individual is the id used for the individual, and Tissue is the analysed tissue without dots (i.e Brain, Skin_sun_exposed...)
 
 
 3. **Step 3. 3D-Matrix: multi-tissue, multi-individual**
 
-In this step we collect all tsv per individual obtained in Step 2 to create a multi-tissue per individual matrix. It is performed with the python script ` tsv2matrix.py`, which requires (tsv files should be sorted by genomic coordinates):
+In this step we collect all tsv files per individual obtained in Step 2 to create a multi-tissue per individual matrix. It is performed with the python script ` tsv2matrix.py`, which requires (tsv files should be sorted by genomic coordinates):
 
 ```
 usage: tsv2matrix.py [-h] --input I --headerlines H --individual ID --output O
@@ -233,8 +233,8 @@ optional arguments:
                         output_file prefix
 ```
 
-* Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
-* Multi-tissue, multi-individual matrix obtained previously in Step 3.
-* Random forest object found in source/RandomForest_model.rds.
-* Bed file with blacklisted genes created from [Fajardo et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/22294350) (source/blacklist.bed)
-* Systematic errors (ABB) ([Muyas et al. 2019](https://www.ncbi.nlm.nih.gov/pubmed/30353964)) and editing sites bed file described in literature ([Tan et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/29022589), [Kiran et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/23074185) and [Picardi et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/27587585)) : source/systematic_editing.bed.gz (needed to be unzip for the script)
+* (-t) Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
+* (-m) Multi-tissue, multi-individual matrix obtained previously in Step 3.
+* (-rf) Random forest object found in source/RandomForest_model.rds.
+* (-b) Bed file with blacklisted genes created from [Fajardo et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/22294350) (source/blacklist.bed)
+* (-e) Systematic errors (ABB) ([Muyas et al. 2019](https://www.ncbi.nlm.nih.gov/pubmed/30353964)) and editing sites bed file described in literature ([Tan et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/29022589), [Kiran et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/23074185) and [Picardi et al. 2017](https://www.ncbi.nlm.nih.gov/pubmed/27587585)) : source/systematic_editing.bed.gz (needed to be unzip for the script)
