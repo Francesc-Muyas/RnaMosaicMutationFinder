@@ -236,5 +236,5 @@ optional arguments:
 * Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
 * Multi-tissue, multi-individual matrix obtained previously in Step 3.
 * Random forest object found in source/RandomForest_model.rds.
-* Bed file with blacklisted genes obtained from [Fajardo et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/22294350) (source/blacklist.bed)
-* Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
+* Bed file with blacklisted genes created from [Fajardo et al. 2012](https://www.ncbi.nlm.nih.gov/pubmed/22294350) (source/blacklist.bed)
+* Systematic errors (ABB) ([Muyas et al. 2019](https://www.ncbi.nlm.nih.gov/pubmed/30353964)) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
