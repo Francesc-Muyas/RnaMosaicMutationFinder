@@ -52,7 +52,7 @@ Firstly, you will need to install some software
 
 ## Documentation and usage
 
-- Step 1. Single sample somatic calling. 
+1. **Step 1. Single sample somatic calling**
 
 Raw BAM files are post-processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`. `python bam_quality_filter.py` requires:
 
@@ -213,8 +213,29 @@ Once matrixes per individual are created, they must be merged taking into accoun
 
 Once Multi-tissue, multi-individual matrix is created, you can filter it for germline variants, editing sites and systematic/recurrent errors using the R script `Matrix_filtering.r`. This script have some requirements:
 
-* Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
-* Multi-tissue, multi-individual matrix obtained previously in Step 3.
-* Random forest object found in source/RandomForest_model.rds.
-* Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
-* Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
+```
+usage: Matrix_filtering.r [-h] -t file -m file -rf RANDOM_FOREST -b file -e
+                          file -o file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t file, --tsv file   Tsv file with counts
+  -m file, --matrix file
+                        Matrix table with all tissues and individuals
+  -rf RANDOM_FOREST, --random_forest RANDOM_FOREST
+                        Random forest R object
+  -b file, --black file
+                        Bedfile of blacklisted genes
+  -e file, --exclude file
+                        Bed file with excluding regions (editing, systematic
+                        errors, germline sites...)
+  -o file, --output_file file
+                        output_file prefix
+```
+
+
+Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
+Multi-tissue, multi-individual matrix obtained previously in Step 3.
+Random forest object found in source/RandomForest_model.rds.
+Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
+Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
