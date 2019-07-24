@@ -9,7 +9,7 @@ As observed in the workflow figure, the workflow is divided in 4 parts:
 * Step 3. 3D-Matrix: multi-tissue, multi-individual
 * Step 4. 3D-Matrix: Filtering
 
-![image](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.pdf)
+<img src="https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.pdf" alt="Workflow"/>
 
 ## Get RnaMosaicMutationFinder tools  
 You will need to run `git clone ` to get RnaMosaicMutationFinder tools. 
