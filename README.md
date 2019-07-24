@@ -167,7 +167,7 @@ optional arguments:
 Once we get the vcf for all samples, we collapse all PASS variant sites in one zero-based bed file (i.e using bedtools merge), which will be necessary for Step 2.
 
 
-- Step 2. Re-genotyping variant sites in all samples.
+2. **Step 2. Re-genotyping variant sites in all samples**
 
 Once we have created the bed file with all variant sites, if possible, we should remove those sites which are known to be germline variants from the analysis. 
 
@@ -188,7 +188,7 @@ optional arguments:
 !! Output files shoul be called with next pattern: `Individual.Tissue.tsv`, where Individual is the id used for the individual, and Tissue is the analysed tissue without dots (i.e Brain, Skin_sun_exposed...)
 
 
-- Step 3. 3D-Matrix: multi-tissue, multi-individual
+3. **Step 3. 3D-Matrix: multi-tissue, multi-individual**
 
 In this step we collect all tsv per individual obtained in Step 2 to create a multi-tissue per individual matrix. It is performed with the python script ` tsv2matrix.py`, which requires (tsv files should be sorted by genomic coordinates):
 
@@ -209,7 +209,7 @@ optional arguments:
 Once matrixes per individual are created, they must be merged taking into account the column order (R function `rbind.fill` from `plyr` package)
 
 
-- Step 4. 3D-Matrix: Filtering
+4. **Step 4. 3D-Matrix: Filtering*
 
 Once Multi-tissue, multi-individual matrix is created, you can filter it for germline variants, editing sites and systematic/recurrent errors using the R script `Matrix_filtering.r`. This script have some requirements:
 
@@ -233,9 +233,8 @@ optional arguments:
                         output_file prefix
 ```
 
-
-Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
-Multi-tissue, multi-individual matrix obtained previously in Step 3.
-Random forest object found in source/RandomForest_model.rds.
-Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
-Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
+* Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
+* Multi-tissue, multi-individual matrix obtained previously in Step 3.
+* Random forest object found in source/RandomForest_model.rds.
+* Bed file with blacklisted genes obtained from Fajardo et al. (source/blacklist.bed)
+* Systematic errors (ABB) and editing sites bed file described in literature (source/systematic_editing.bed.gz, needed to be unzip for the script)
