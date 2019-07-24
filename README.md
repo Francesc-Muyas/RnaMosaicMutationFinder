@@ -44,3 +44,5 @@ Firstly, you will need to install some software
     * randomForest
     * survcomp (Bioconductor)
     * VGAM
+
+## Documentation and usage
