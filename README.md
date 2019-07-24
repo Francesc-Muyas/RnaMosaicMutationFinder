@@ -9,7 +9,7 @@ As observed in the workflow figure, the workflow is divided in 4 parts:
 * Step 3. 3D-Matrix: multi-tissue, multi-individual
 * Step 4. 3D-Matrix: Filtering
 
-![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.pdf)
+![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.png)
 
 ## Get RnaMosaicMutationFinder tools  
 You will need to run `git clone ` to get RnaMosaicMutationFinder tools. 
@@ -94,4 +94,24 @@ Once pileup files are transformed to read counts in tsv files, we model errors u
 
     Error rate ~ Beta(alpha, beta)
 
-As the error rate differs depending on the nucleotide change (for example due to DNA oxidation artifacts affecting only a specific base), we modeled error distributions independently for each possible nucleotide change (A>C, A>T, A>G, C>A, C>T, C>G). Finally, we identified all sites showing alternative allele counts significantly deviating from the ER distribution after FDR correction.
+As the error rate differs depending on the nucleotide change, we modeled error distributions independently for each possible nucleotide change (A>C, A>T, A>G, C>A, C>T, C>G). Finally, we identified all sites showing alternative allele counts significantly deviating from the ER distribution after FDR correction.
+
+This step is performed by the R script `tsv_betabinomial.r`. `Rscript tsv_betabinomial.r` requires:
+
+```
+usage: tsv_betabinomial.r [-h] -t file [-n NORMAL_FILE] [-tr TRAIN_FILE] -o
+                          file [-b BED]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t file, --tumor_file file
+                        Tumor - Read count input file
+  -n NORMAL_FILE, --normal_file NORMAL_FILE
+                        Normal - Read count input file (not mandatory)
+  -tr TRAIN_FILE, --train_file TRAIN_FILE
+                        File to trian error rate distribution [optional]
+  -o file, --out_file file
+                        output_file
+  -b BED, --bed BED     Bed file with positions to ignore for modelling (not mandatory)
+```
+
