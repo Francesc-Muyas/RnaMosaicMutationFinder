@@ -50,7 +50,8 @@ Firstly, you will need to install some software
 ## Documentation and usage
 
 * Step 1. Single sample somatic calling. 
-Raw BAM files are post-processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`. `bam_quality_filter.py` requires:
+
+Raw BAM files are post-processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`. `python bam_quality_filter.py` requires:
 
 ```
 usage: bam_quality_filter.py [-h] --infile INFILE --outfile OUTFILE
@@ -66,3 +67,31 @@ optional arguments:
                      4
   --maxGAP MAXGAP    Maximum number of GAPs . Default = 1
 ```
+
+Finally, in order to avoid systematic alignment errors at the extremes of the reads, we suggest trimming the first and last 4 bases from each read-end or read-breakpoint (BamUtil version 1.0.14).
+
+Mpileup file is obtained using Samtools mpileup (version 1.3.1). Pileup files are transformed to tsv files using `pileup2tsv.py` python script, which requires:
+
+```
+usage: pileup2tsv.py [-h] --pileup PILEUP -o VARIANTF [--minBQ MINBQ]
+                     [-m MINDEPTH]
+
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --pileup PILEUP       Pileup file.
+  -o VARIANTF, --variantf VARIANTF
+                        Output file for predicted SNPs and indels.
+  --minBQ MINBQ         Minimum base quality to consider nucleotide in SNP
+                        analysis. Default = 10
+  -m MINDEPTH, --mindepth MINDEPTH
+                        Minimum minimum total depth
+```
+
+Once pileup files are transformed to read counts in tsv files, we model errors using a Beta Binomial distribution where:
+
+    Error alternative counts ~ Bin(Coverage, error rate)
+
+    Error rate ~ Beta(alpha, beta)
+
+As the error rate differs depending on the nucleotide change (for example due to DNA oxidation artifacts affecting only a specific base), we modeled error distributions independently for each possible nucleotide change (A>C, A>T, A>G, C>A, C>T, C>G). Finally, we identified all sites showing alternative allele counts significantly deviating from the ER distribution after FDR correction.
