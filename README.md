@@ -4,12 +4,13 @@ Somatic variant calling tools for RNAseq data
 RnaMosaicMutationFinder provides a workflow and individual custom scripts to perform somatic variant calling in RNA-seq data. 
 As observed in the workflow figure, the workflow is divided in 4 parts:
 
+![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.png)
+
 * Step 1. Single sample somatic variant calling. 
 * Step 2. Re-genotyping variant sites in all samples.
 * Step 3. 3D-Matrix: multi-tissue, multi-individual
 * Step 4. 3D-Matrix: Filtering
 
-![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.png)
 
 ## Get RnaMosaicMutationFinder tools  
 You will need to run `git clone ` to get RnaMosaicMutationFinder tools. 
@@ -115,3 +116,50 @@ optional arguments:
   -b BED, --bed BED     Bed file with positions to ignore for modelling (not mandatory)
 ```
 
+Then, the resulting file is transformed to a Variant Calling File (vcf) using python script `tsv2vcf.py`:
+
+```
+usage: tsv2vcf.py [-h] -i INFILE [-tID TUMORID] [-nID NORMALID] -ref REFERENCE
+                  -o OUTFILE [-cov MIN_COV] [-ac MIN_AC]
+                  [-variant_dist MIN_DIST] [-dup1 DUPLICATE1_FILTER]
+                  [-dup2 DUPLICATE2_FILTER] [-str {0,1}] [-af MIN_AF]
+                  [-end {0,1}] [-som {single,paired}]
+
+Getting barcodes in fastq file and labels
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INFILE, --infile INFILE
+                        Tsv table
+  -tID TUMORID, --tumorid TUMORID
+                        Tumor sample id
+  -nID NORMALID, --normalid NORMALID
+                        Normal sample id
+  -ref REFERENCE, --reference REFERENCE
+                        Reference fastq file which table was build
+  -o OUTFILE, --outfile OUTFILE
+                        Vcf output file
+  -cov MIN_COV, --min_COV MIN_COV
+                        Minimum Coverage
+  -ac MIN_AC, --min_AC MIN_AC
+                        Minimum reads supporting alternative allele
+  -variant_dist MIN_DIST, --min_DIST MIN_DIST
+                        Minimum distance allowed between variants (to avoid
+                        clustered errors)
+  -dup1 DUPLICATE1_FILTER, --duplicate1_FILTER DUPLICATE1_FILTER
+                        Minimum (mean) number of duplicates 1
+  -dup2 DUPLICATE2_FILTER, --duplicate2_FILTER DUPLICATE2_FILTER
+                        Minimum (mean) number of duplicates 2
+  -str {0,1}, --strand {0,1}
+                        Strand bias test (Fisher test). 0 for turn it off
+  -af MIN_AF, --min_AF MIN_AF
+                        Minimum allele frequency allowed
+  -end {0,1}, --end_read_filter {0,1}
+                        Filtering for variants found at end or begining of the
+                        read. 0 for turn it off. Default: Activated
+  -som {single,paired}, --somatic_type {single,paired}
+                        If analysis is based on two paired samples (paired) or
+                        based on only one sample (single). Default: paired
+```
+
+Once we get the vcf for all samples, we collapse all PASS variant sites in one zero-based bed file (i.e using bedtools merge), which will be necessary for Step 2.
