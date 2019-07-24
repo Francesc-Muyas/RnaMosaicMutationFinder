@@ -4,12 +4,14 @@ Somatic variant calling tools for RNAseq data
 RnaMosaicMutationFinder provides a workflow and individual custom scripts to perform somatic variant calling in RNA-seq data. 
 As observed in the workflow figure, the workflow is divided in 4 parts:
 
-![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.png)
-
 * Step 1. Single sample somatic variant calling. 
 * Step 2. Re-genotyping variant sites in all samples.
 * Step 3. 3D-Matrix: multi-tissue, multi-individual
 * Step 4. 3D-Matrix: Filtering
+
+## RnaMosaicMutationFinder workflow
+
+![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.png)
 
 
 ## Get RnaMosaicMutationFinder tools  
@@ -186,7 +188,7 @@ optional arguments:
 !! Output files shoul be called with next pattern: `Individual.Tissue.tsv`, where Individual is the id used for the individual, and Tissue is the analysed tissue without dots (i.e Brain, Skin_sun_exposed...)
 
 
-*Step 3. 3D-Matrix: multi-tissue, multi-individual
+* Step 3. 3D-Matrix: multi-tissue, multi-individual
 
 In this step we collect all tsv per individual obtained in Step 2 to create a multi-tissue per individual matrix. It is performed with the python script ` tsv2matrix.py`, which requires (tsv files should be sorted by genomic coordinates):
 
@@ -207,3 +209,12 @@ optional arguments:
 Once matrixes per individual are created, they must be merged taking into account the column order (R function `rbind.fill` from `plyr` package)
 
 
+* Step 4. 3D-Matrix: Filtering
+
+Once Multi-tissue, multi-individual matrix is created, you can filter it for germline variants, editing sites and systematic/recurrent errors using the R script `Matrix_filtering.r`. This script have some requirements:
+
+    * Collapsed tsv file with all counts of variants analysed (if you want to save memory, you can filter this file with ALT_COUNT > 3 in the proper column in the collapsed tsv file.
+    * Multi-tissue, multi-individual matrix obtained previously in Step 3.
+    * Random forest object found in source/RandomForest_model.rds.
+    * Bed file with blacklisted genes obtained from Fajardo et al. (source/ blacklist.bed)
+    * Systematic errors (ABB) and editing sites bed file described in literature (source/ systematic_editing.bed.gz, necessary to be unzip for the script)
