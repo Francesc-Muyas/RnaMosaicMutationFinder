@@ -9,7 +9,7 @@ As observed in the workflow figure, the workflow is divided in 4 parts:
 * Step 3. 3D-Matrix: multi-tissue, multi-individual
 * Step 4. 3D-Matrix: Filtering
 
-!(https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.pdf)
+![Workflow](https://github.com/Francesc-Muyas/RnaMosaicMutationFinder/blob/master/pictures/Workflow_github.pdf)
 
 ## Get RnaMosaicMutationFinder tools  
 You will need to run `git clone ` to get RnaMosaicMutationFinder tools. 
@@ -48,3 +48,21 @@ Firstly, you will need to install some software
     * VGAM
 
 ## Documentation and usage
+
+* Step 1. Single sample somatic calling. 
+Raw BAM files are post-processed in order to remove alignment artefacts. PCR duplicates are marked using Picard (version 2.10.1) and reads mapping to different exons are split using SplitNCigar (part of GATK 3.7 package). Furthermore, low quality reads are removed with the python tool `bam_quality_filter.py`. `bam_quality_filter.py` requires:
+
+```
+usage: bam_quality_filter.py [-h] --infile INFILE --outfile OUTFILE
+                             [--minMQ MINMQ] [--maxMM MAXMM] [--maxGAP MAXGAP]
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --infile INFILE    Input BAM file.
+  --outfile OUTFILE  Output BAM file.
+  --minMQ MINMQ      Minimum required mapping quality of aligned read. Default
+                     = 30
+  --maxMM MAXMM      Maximum number of mismatches of aligned read . Default =
+                     4
+  --maxGAP MAXGAP    Maximum number of GAPs . Default = 1
+```
